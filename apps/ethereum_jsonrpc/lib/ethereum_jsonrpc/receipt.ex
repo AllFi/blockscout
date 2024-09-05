@@ -13,7 +13,8 @@ defmodule EthereumJSONRPC.Receipt do
       @chain_type_fields quote(
                            do: [
                              blob_gas_price: non_neg_integer(),
-                             blob_gas_used: non_neg_integer()
+                             blob_gas_used: non_neg_integer(),
+                             authorization_list: [EthereumJSONRPC.signed_authorization()]
                            ]
                          )
 
@@ -113,7 +114,8 @@ defmodule EthereumJSONRPC.Receipt do
   #{case Application.compile_env(:explorer, :chain_type) do
     :ethereum -> """
             blob_gas_price: 0,\
-            blob_gas_used: 0\
+            blob_gas_used: 0,\
+            authorization_list: []\
       """
     :optimism -> """
           l1_fee: 0,\
@@ -162,7 +164,8 @@ defmodule EthereumJSONRPC.Receipt do
   #{case Application.compile_env(:explorer, :chain_type) do
     :ethereum -> """
             blob_gas_price: 0,\
-            blob_gas_used: 0\
+            blob_gas_used: 0,\
+            authorization_list: []\
       """
     :optimism -> """
           l1_fee: 0,\
@@ -223,7 +226,8 @@ defmodule EthereumJSONRPC.Receipt do
         params
         |> Map.merge(%{
           blob_gas_price: Map.get(elixir, "blobGasPrice", 0),
-          blob_gas_used: Map.get(elixir, "blobGasUsed", 0)
+          blob_gas_used: Map.get(elixir, "blobGasUsed", 0),
+          authorization_list: Map.get(elixir, "authorizationList", [])
         })
       end
 
@@ -400,6 +404,11 @@ defmodule EthereumJSONRPC.Receipt do
       other ->
         {:error, {:unknown_value, %{key: key, value: other}}}
     end
+  end
+
+  if Application.compile_env(:explorer, :chain_type) == :ethereum do
+    defp entry_to_elixir({"authorizationList" = key, value}),
+      do: {:ok, { key, value |> Enum.map(&(EthereumJSONRPC.signed_authorization_to_elixir(&1)))}}
   end
 
   # fixes for latest ganache JSON RPC

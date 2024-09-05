@@ -8,7 +8,7 @@ defmodule Explorer.Repo.Eip7702.Migrations.CreateEip7702Authorizations do
       add(:index, :integer, null: false)
       add(:address, :bytea, null: false)
       add(:nonce, :integer, null: false)
-      add(:v, :integer, null: false)
+      add(:y_parity, :integer, null: false)
       add(:r, :numeric, precision: 100, null: false)
       add(:s, :numeric, precision: 100, null: false)
     end

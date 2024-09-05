@@ -22,7 +22,8 @@ defmodule EthereumJSONRPC.Transaction do
       @chain_type_fields quote(
                            do: [
                              max_fee_per_blob_gas: non_neg_integer(),
-                             blob_versioned_hashes: [EthereumJSONRPC.hash()]
+                             blob_versioned_hashes: [EthereumJSONRPC.hash()],
+                             authorization_list: [EthereumJSONRPC.signed_authorization()]
                            ]
                          )
 
@@ -109,6 +110,7 @@ defmodule EthereumJSONRPC.Transaction do
     :ethereum -> """
        * `"maxFeePerBlobGas"` - `t:EthereumJSONRPC.quantity/0` of wei to denote max fee per unit of blob gas used. Introduced in [EIP-4844](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-4844.md)
        * `"blobVersionedHashes"` - `t:list/0` of `t:EthereumJSONRPC.hash/0` of included data blobs hashes. Introduced in [EIP-4844](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-4844.md)
+       * `"authorizationList"` - `t:list/0` of `t:EthereumJSONRPC.signed_authorization/0` of EIP-7702 authorizations. Introduced in [EIP-7702](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-7702.md)
       """
     :optimism -> """
        * `"l1TxOrigin"` - .
@@ -500,7 +502,8 @@ defmodule EthereumJSONRPC.Transaction do
       :ethereum ->
         put_if_present(params, elixir, [
           {"blobVersionedHashes", :blob_versioned_hashes},
-          {"maxFeePerBlobGas", :max_fee_per_blob_gas}
+          {"maxFeePerBlobGas", :max_fee_per_blob_gas},
+          {"authorizationList", :authorization_list}
         ])
 
       :optimism ->
@@ -698,6 +701,11 @@ defmodule EthereumJSONRPC.Transaction do
       nil -> {key, chain_id}
       _ -> {key, quantity_to_integer(chain_id)}
     end
+  end
+
+  if Application.compile_env(:explorer, :chain_type) == :ethereum do
+    defp entry_to_elixir({"authorizationList" = key, value}),
+      do: { key, value |> Enum.map(&(EthereumJSONRPC.signed_authorization_to_elixir(&1)))}
   end
 
   # Celo-specific fields

@@ -144,6 +144,18 @@ defmodule EthereumJSONRPC do
   """
   @type request_id :: String.t() | non_neg_integer()
 
+  @typedoc """
+  EIP-7702 signed authorization data.
+  """
+  @type signed_authorization :: %{
+          chain_id: non_neg_integer(),
+          address: address(),
+          nonce: non_neg_integer(),
+          r: non_neg_integer(),
+          s: non_neg_integer(),
+          y_parity: non_neg_integer()
+        }
+
   @doc """
   Execute smart contract functions.
 
@@ -507,6 +519,22 @@ defmodule EthereumJSONRPC do
   def integer_to_quantity(integer) when is_binary(integer) do
     integer
   end
+
+  @doc """
+  Converts `map()/0` to `t:signed_authorization/0`
+  """
+  @spec signed_authorization_to_elixir(map()) :: signed_authorization()
+  def signed_authorization_to_elixir(map) do
+    %{
+      chain_id: map["chainId"],
+      address: map["address"],
+      nonce: map["nonce"],
+      r: map["r"],
+      s: map["s"],
+      y_parity: map["yParity"]
+    }
+  end
+
 
   @doc """
   A request payload for a JSONRPC.

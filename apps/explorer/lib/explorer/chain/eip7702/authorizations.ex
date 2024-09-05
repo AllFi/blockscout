@@ -1,0 +1,47 @@
+defmodule Explorer.Chain.Eip7702.Authorizations do
+  @moduledoc "Models a transaction extension with extra fields from eip4844 blob transactions."
+
+  use Explorer.Schema
+
+  alias Explorer.Chain.{Hash, Transaction}
+
+  @required_attrs ~w(transaction_hash index address nonce r s y_parity)a
+
+  # @type t :: %__MODULE__{
+  #         hash: Hash.Full,
+  #         index: :integer,
+  #         address: Hash.Address,
+  #         nonce: :integer,
+  #         r: :decimal,
+  #         s: :decimal,
+  #         y_parity: :integer
+  #       }
+
+  @primary_key false
+  schema "eip7702_authorizations" do
+    field(:index, :integer)
+    field(:address, Hash.Address)
+    field(:nonce, :integer)
+    field(:r, :decimal)
+    field(:s, :decimal)
+    field(:y_parity, :integer)
+
+    belongs_to(:transaction, Transaction,
+      foreign_key: :transaction_hash,
+      primary_key: true,
+      references: :hash,
+      type: Hash.Full
+    )
+  end
+
+  @doc """
+    Validates that the `attrs` are valid.
+  """
+  @spec changeset(Ecto.Schema.t(), map()) :: Ecto.Schema.t()
+  def changeset(%__MODULE__{} = struct, attrs \\ %{}) do
+    struct
+    |> cast(attrs, @required_attrs)
+    |> validate_required(@required_attrs)
+    |> foreign_key_constraint(:transaction_hash)
+  end
+end
