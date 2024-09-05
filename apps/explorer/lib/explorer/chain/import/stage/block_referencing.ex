@@ -52,7 +52,8 @@ defmodule Explorer.Chain.Import.Stage.BlockReferencing do
       Runner.Shibarium.BridgeOperations
     ],
     ethereum: [
-      Runner.Beacon.BlobTransactions
+      Runner.Beacon.BlobTransactions,
+      Runner.Eip7702.Authorizations
     ],
     arbitrum: [
       Runner.Arbitrum.Messages,

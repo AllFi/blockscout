@@ -1,25 +1,27 @@
-defmodule Explorer.Chain.Eip7702.Authorizations do
+defmodule Explorer.Chain.Eip7702.Authorization do
   @moduledoc "Models a transaction extension with extra fields from eip4844 blob transactions."
 
   use Explorer.Schema
 
   alias Explorer.Chain.{Hash, Transaction}
 
-  @required_attrs ~w(transaction_hash index address nonce r s y_parity)a
+  @required_attrs ~w(transaction_hash index chain_id address nonce r s y_parity)a
 
-  # @type t :: %__MODULE__{
-  #         hash: Hash.Full,
-  #         index: :integer,
-  #         address: Hash.Address,
-  #         nonce: :integer,
-  #         r: :decimal,
-  #         s: :decimal,
-  #         y_parity: :integer
-  #       }
+  @type t :: %__MODULE__{
+          transaction_hash: Hash.Full,
+          index: :integer,
+          chain_id: :integer,
+          address: Hash.Address,
+          nonce: :integer,
+          r: :decimal,
+          s: :decimal,
+          y_parity: :integer
+        }
 
   @primary_key false
   schema "eip7702_authorizations" do
     field(:index, :integer)
+    field(:chain_id, :integer)
     field(:address, Hash.Address)
     field(:nonce, :integer)
     field(:r, :decimal)
@@ -32,6 +34,8 @@ defmodule Explorer.Chain.Eip7702.Authorizations do
       references: :hash,
       type: Hash.Full
     )
+
+    timestamps()
   end
 
   @doc """

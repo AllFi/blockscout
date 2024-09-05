@@ -526,12 +526,12 @@ defmodule EthereumJSONRPC do
   @spec signed_authorization_to_elixir(map()) :: signed_authorization()
   def signed_authorization_to_elixir(map) do
     %{
-      chain_id: map["chainId"],
+      chain_id: quantity_to_integer(map["chainId"]),
       address: map["address"],
-      nonce: map["nonce"],
-      r: map["r"],
-      s: map["s"],
-      y_parity: map["yParity"]
+      nonce: quantity_to_integer(map["nonce"]),
+      r: quantity_to_integer(map["r"]),
+      s: quantity_to_integer(map["s"]),
+      y_parity: quantity_to_integer(map["yParity"])
     }
   end
 

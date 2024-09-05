@@ -10,7 +10,7 @@ defmodule Explorer.Chain.Transaction.Schema do
     Address,
     Beacon.BlobTransaction,
     Block,
-    Eip7702.Authorizations,
+    Eip7702.Authorization,
     Data,
     Hash,
     InternalTransaction,
