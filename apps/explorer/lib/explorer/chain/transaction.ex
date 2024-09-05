@@ -32,7 +32,8 @@ defmodule Explorer.Chain.Transaction.Schema do
                           # elem(quote do ... end, 2) doesn't work with a single has_one instruction
                           quote do
                             [
-                              has_one(:beacon_blob_transaction, BlobTransaction, foreign_key: :hash, references: :hash)
+                              has_one(:beacon_blob_transaction, BlobTransaction, foreign_key: :hash, references: :hash),
+                              has_many(:eip7702_authorizations, Authorization, foreign_key: :transaction_hash, references: :hash)
                             ]
                           end
 

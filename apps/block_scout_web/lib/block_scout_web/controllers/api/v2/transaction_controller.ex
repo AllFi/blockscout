@@ -53,7 +53,8 @@ defmodule BlockScoutWeb.API.V2.TransactionController do
   case Application.compile_env(:explorer, :chain_type) do
     :ethereum ->
       @chain_type_transaction_necessity_by_association %{
-        :beacon_blob_transaction => :optional
+        :beacon_blob_transaction => :optional,
+        :eip7702_authorizations => :optional
       }
 
     :celo ->
