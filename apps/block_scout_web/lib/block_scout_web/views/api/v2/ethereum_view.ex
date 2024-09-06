@@ -36,16 +36,21 @@ defmodule BlockScoutWeb.API.V2.EthereumView do
 
       authorizations ->
         out_json
-        |> Map.put("eip7702_authorizations", authorizations |> Enum.sort_by(& &1.index, :asc) |> Enum.map(&(
-          %{
-            "address" => &1.address,
-            "chain_id" => &1.chain_id,
-            "nonce" => &1.nonce,
-            "r" => &1.r,
-            "s" => &1.s,
-            "yParity" => &1.y_parity
-          }
-        )))
+        |> Map.put(
+          "authorizationList",
+          authorizations
+          |> Enum.sort_by(& &1.index, :asc)
+          |> Enum.map(
+            &%{
+              "address" => &1.address,
+              "chain_id" => &1.chain_id,
+              "nonce" => &1.nonce,
+              "r" => &1.r,
+              "s" => &1.s,
+              "yParity" => &1.y_parity
+            }
+          )
+        )
     end
   end
 

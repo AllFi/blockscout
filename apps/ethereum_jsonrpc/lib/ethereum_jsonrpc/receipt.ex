@@ -408,7 +408,7 @@ defmodule EthereumJSONRPC.Receipt do
 
   if Application.compile_env(:explorer, :chain_type) == :ethereum do
     defp entry_to_elixir({"authorizationList" = key, value}),
-      do: {:ok, { key, value |> Enum.map(&(EthereumJSONRPC.signed_authorization_to_elixir(&1)))}}
+      do: {:ok, {key, value |> Enum.map(&EthereumJSONRPC.to_signed_authorization/1)}}
   end
 
   # fixes for latest ganache JSON RPC

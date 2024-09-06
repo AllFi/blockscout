@@ -9,8 +9,6 @@ defmodule Explorer.Chain.Import.Runner.Eip7702.Authorizations do
   alias Explorer.Chain.{Import, Eip7702.Authorization}
   alias Explorer.Prometheus.Instrumenter
 
-  import Ecto.Query, only: [from: 2]
-
   @behaviour Import.Runner
 
   # milliseconds
@@ -59,7 +57,7 @@ defmodule Explorer.Chain.Import.Runner.Eip7702.Authorizations do
           required(:timeout) => timeout,
           required(:timestamps) => Import.timestamps()
         }) ::
-          {:ok, [Log.t()]}
+          {:ok, [Authorization.t()]}
           | {:error, [Changeset.t()]}
   defp insert(repo, changes_list, %{timeout: timeout, timestamps: timestamps} = options) when is_list(changes_list) do
     {:ok, _} =

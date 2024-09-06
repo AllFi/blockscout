@@ -287,23 +287,26 @@ defmodule Indexer.Block.Fetcher do
           params: transactions_with_receipts |> Enum.filter(&Map.has_key?(&1, :max_fee_per_blob_gas))
         })
         |> Map.put_new(:eip7702_authorizations, %{
-          params: transactions_with_receipts |>
-          Enum.filter(&Map.has_key?(&1, :authorization_list)) |>
-          Enum.map(&(&1.authorization_list |> Enum.with_index() |> Enum.map(
-            fn {authorization, index} ->
-              %{
-                transaction_hash: &1.hash,
-                index: index,
-                chain_id: authorization.chain_id,
-                address: authorization.address,
-                nonce: authorization.nonce,
-                r: authorization.r,
-                s: authorization.s,
-                y_parity: authorization.y_parity
-              }
-            end
-          ))) |>
-          List.flatten()
+          params:
+            transactions_with_receipts
+            |> Enum.filter(&Map.has_key?(&1, :authorization_list))
+            |> Enum.map(
+              &(&1.authorization_list
+                |> Enum.with_index()
+                |> Enum.map(fn {authorization, index} ->
+                  %{
+                    transaction_hash: &1.hash,
+                    index: index,
+                    chain_id: authorization.chain_id,
+                    address: authorization.address,
+                    nonce: authorization.nonce,
+                    r: authorization.r,
+                    s: authorization.s,
+                    y_parity: authorization.y_parity
+                  }
+                end))
+            )
+            |> List.flatten()
         })
 
       :optimism ->

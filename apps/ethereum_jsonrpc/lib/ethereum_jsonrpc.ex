@@ -523,8 +523,8 @@ defmodule EthereumJSONRPC do
   @doc """
   Converts `map()/0` to `t:signed_authorization/0`
   """
-  @spec signed_authorization_to_elixir(map()) :: signed_authorization()
-  def signed_authorization_to_elixir(map) do
+  @spec to_signed_authorization(map()) :: signed_authorization()
+  def to_signed_authorization(map) do
     %{
       chain_id: quantity_to_integer(map["chainId"]),
       address: map["address"],
@@ -534,7 +534,6 @@ defmodule EthereumJSONRPC do
       y_parity: quantity_to_integer(map["yParity"])
     }
   end
-
 
   @doc """
   A request payload for a JSONRPC.
