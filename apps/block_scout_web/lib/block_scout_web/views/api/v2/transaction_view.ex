@@ -608,7 +608,20 @@ defmodule BlockScoutWeb.API.V2.TransactionView do
                | :token_creation
                | :token_transfer
                | :blob_transaction
-  def tx_types(tx, types \\ [], stage \\ :blob_transaction)
+               | :set_code_transaction
+  def tx_types(tx, types \\ [], stage \\ :set_code_transaction)
+
+  def tx_types(%Transaction{type: type} = tx, types, :set_code_transaction) do
+    # EIP-7702 set code transaction type
+    types =
+      if type == 4 do
+        [:set_code_transaction | types]
+      else
+        types
+      end
+
+    tx_types(tx, types, :blob_transaction)
+  end
 
   def tx_types(%Transaction{type: type} = tx, types, :blob_transaction) do
     # EIP-2718 blob transaction type
