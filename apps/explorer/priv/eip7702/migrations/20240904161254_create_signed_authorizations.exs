@@ -1,13 +1,14 @@
-defmodule Explorer.Repo.Eip7702.Migrations.CreateEip7702Authorizations do
+defmodule Explorer.Repo.Eip7702.Migrations.CreateSignedAuthorizations do
   use Ecto.Migration
 
   def change do
-    create table(:eip7702_authorizations, primary_key: false) do
+    create table(:signed_authorizations, primary_key: false) do
       add(:transaction_hash, references(:transactions, column: :hash, on_delete: :delete_all, type: :bytea),
-        null: false
+        null: false,
+        primary_key: true
       )
 
-      add(:index, :integer, null: false)
+      add(:index, :integer, null: false, primary_key: true)
       add(:chain_id, :integer, null: false)
       add(:address, :bytea, null: false)
       add(:nonce, :integer, null: false)

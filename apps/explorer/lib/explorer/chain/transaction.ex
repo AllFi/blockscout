@@ -33,7 +33,7 @@ defmodule Explorer.Chain.Transaction.Schema do
                           quote do
                             [
                               has_one(:beacon_blob_transaction, BlobTransaction, foreign_key: :hash, references: :hash),
-                              has_many(:eip7702_authorizations, Authorization,
+                              has_many(:signed_authorizations, Authorization,
                                 foreign_key: :transaction_hash,
                                 references: :hash
                               )

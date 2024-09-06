@@ -286,7 +286,7 @@ defmodule Indexer.Block.Fetcher do
         |> Map.put_new(:beacon_blob_transactions, %{
           params: transactions_with_receipts |> Enum.filter(&Map.has_key?(&1, :max_fee_per_blob_gas))
         })
-        |> Map.put_new(:eip7702_authorizations, %{
+        |> Map.put_new(:signed_authorizations, %{
           params:
             transactions_with_receipts
             |> Enum.filter(&Map.has_key?(&1, :authorization_list))

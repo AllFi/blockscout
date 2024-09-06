@@ -54,7 +54,7 @@ defmodule BlockScoutWeb.API.V2.TransactionController do
     :ethereum ->
       @chain_type_transaction_necessity_by_association %{
         :beacon_blob_transaction => :optional,
-        :eip7702_authorizations => :optional
+        :signed_authorizations => :optional
       }
 
     :celo ->

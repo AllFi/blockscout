@@ -1,5 +1,5 @@
 defmodule Explorer.Chain.Eip7702.Authorization do
-  @moduledoc "Models a transaction extension with extra fields from eip4844 blob transactions."
+  @moduledoc "Models a transaction extension with extra fields from eip7702 set code transactions."
 
   use Explorer.Schema
 
@@ -19,7 +19,7 @@ defmodule Explorer.Chain.Eip7702.Authorization do
         }
 
   @primary_key false
-  schema "eip7702_authorizations" do
+  schema "signed_authorizations" do
     field(:index, :integer)
     field(:chain_id, :integer)
     field(:address, Hash.Address)

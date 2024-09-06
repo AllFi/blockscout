@@ -24,7 +24,7 @@ defmodule BlockScoutWeb.API.V2.EthereumView do
         |> Map.put("burnt_blob_fee", Decimal.mult(item.blob_gas_used, item.blob_gas_price))
     end
 
-    case Map.get(transaction, :eip7702_authorizations) do
+    case Map.get(transaction, :signed_authorizations) do
       nil ->
         out_json
 
