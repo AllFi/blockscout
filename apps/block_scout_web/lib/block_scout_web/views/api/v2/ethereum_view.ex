@@ -47,7 +47,8 @@ defmodule BlockScoutWeb.API.V2.EthereumView do
               "nonce" => &1.nonce,
               "r" => &1.r,
               "s" => &1.s,
-              "yParity" => &1.y_parity
+              "yParity" => &1.y_parity,
+              "authority" => &1.authority
             }
           )
         )
