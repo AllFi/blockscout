@@ -89,19 +89,21 @@ defmodule Explorer.Chain.Import.Runner.Eip7702.Authorizations do
           r: fragment("EXCLUDED.r"),
           s: fragment("EXCLUDED.s"),
           y_parity: fragment("EXCLUDED.y_parity"),
+          authority: fragment("EXCLUDED.authority"),
           inserted_at: fragment("LEAST(?, EXCLUDED.inserted_at)", authorization.inserted_at),
           updated_at: fragment("GREATEST(?, EXCLUDED.updated_at)", authorization.updated_at)
         ]
       ],
       where:
         fragment(
-          "(EXCLUDED.chain_id, EXCLUDED.address, EXCLUDED.nonce, EXCLUDED.r, EXCLUDED.s, EXCLUDED.y_parity) IS DISTINCT FROM (?, ?, ?, ?, ?, ?)",
+          "(EXCLUDED.chain_id, EXCLUDED.address, EXCLUDED.nonce, EXCLUDED.r, EXCLUDED.s, EXCLUDED.y_parity, EXCLUDED.authority) IS DISTINCT FROM (?, ?, ?, ?, ?, ?, ?)",
           authorization.chain_id,
           authorization.address,
           authorization.nonce,
           authorization.r,
           authorization.s,
-          authorization.y_parity
+          authorization.y_parity,
+          authorization.authority
         )
     )
   end

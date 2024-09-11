@@ -5,7 +5,7 @@ defmodule Explorer.Chain.Eip7702.Authorization do
 
   alias Explorer.Chain.{Hash, Transaction}
 
-  @required_attrs ~w(transaction_hash index chain_id address nonce r s y_parity)a
+  @required_attrs ~w(transaction_hash index chain_id address nonce r s y_parity authority)a
 
   @type t :: %__MODULE__{
           transaction_hash: Hash.Full,
@@ -15,7 +15,8 @@ defmodule Explorer.Chain.Eip7702.Authorization do
           nonce: :integer,
           r: :decimal,
           s: :decimal,
-          y_parity: :integer
+          y_parity: :integer,
+          authority: Hash.Address
         }
 
   @primary_key false
@@ -27,6 +28,7 @@ defmodule Explorer.Chain.Eip7702.Authorization do
     field(:r, :decimal)
     field(:s, :decimal)
     field(:y_parity, :integer)
+    field(:authority, Hash.Address)
 
     belongs_to(:transaction, Transaction,
       foreign_key: :transaction_hash,

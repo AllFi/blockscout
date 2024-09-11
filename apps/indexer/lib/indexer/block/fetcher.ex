@@ -302,7 +302,16 @@ defmodule Indexer.Block.Fetcher do
                     nonce: authorization.nonce,
                     r: authorization.r,
                     s: authorization.s,
-                    y_parity: authorization.y_parity
+                    y_parity: authorization.y_parity,
+                    authority:
+                      recover_authority(
+                        authorization.chain_id,
+                        authorization.address,
+                        authorization.nonce,
+                        authorization.r,
+                        authorization.s,
+                        authorization.y_parity
+                      )
                   }
                 end))
             )
@@ -750,5 +759,22 @@ defmodule Indexer.Block.Fetcher do
 
       Map.put(token_transfer, :token, token)
     end)
+  end
+
+  defp recover_authority(chain_id, address, nonce, r, s, y_parity) do
+    eip7702_magic = 0x5
+    {:ok, %{bytes: address_bytes}} = Hash.Address.cast(address)
+    signed_message = ExKeccak.hash_256(<<eip7702_magic>> <> ExRLP.encode([chain_id, address_bytes, nonce]))
+    authority = ec_recover(signed_message, r, s, y_parity)
+    authority
+  end
+
+  defp ec_recover(signed_message, r, s, y_parity) do
+    r_bytes = <<r::integer-size(256)>>
+    s_bytes = <<s::integer-size(256)>>
+    {:ok, <<_compression::bytes-size(1), public_key::binary>>} = ExSecp256k1.recover(signed_message, r_bytes, s_bytes, y_parity)
+    <<_::bytes-size(12), hash::binary>> = ExKeccak.hash_256(public_key)
+    address = Base.encode16(hash, case: :lower)
+    "0x" <> address
   end
 end
