@@ -8,7 +8,7 @@ defmodule Explorer.Chain.Import.Runner.Eip7702.Authorizations do
   import Ecto.Query, only: [from: 2]
 
   alias Ecto.{Changeset, Multi, Repo}
-  alias Explorer.Chain.{Import, Eip7702.Authorization}
+  alias Explorer.Chain.{Eip7702.Authorization, Import}
   alias Explorer.Prometheus.Instrumenter
 
   @behaviour Import.Runner

@@ -714,9 +714,8 @@ defmodule EthereumJSONRPC.Transaction do
   end
 
   if Application.compile_env(:explorer, :chain_type) == :ethereum do
-    defp entry_to_elixir({"authorizationList" = key, value}) do
-      {key, value |> Enum.map(&EthereumJSONRPC.to_signed_authorization/1)}
-    end
+    defp entry_to_elixir({"authorizationList" = key, value}),
+      do: {key, value |> Enum.map(&EthereumJSONRPC.to_signed_authorization/1)}
   end
 
   defp entry_to_elixir(_) do

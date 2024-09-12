@@ -103,8 +103,7 @@ defmodule EthereumJSONRPC.Receipts do
   #{case Application.compile_env(:explorer, :chain_type) do
     :ethereum -> """
             blob_gas_price: 0,\
-            blob_gas_used: 0,\
-            authorization_list: []\
+            blob_gas_used: 0\
       """
     :optimism -> """
         l1_fee: 0,\

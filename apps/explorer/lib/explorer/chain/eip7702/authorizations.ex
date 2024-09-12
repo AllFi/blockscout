@@ -1,5 +1,5 @@
 defmodule Explorer.Chain.Eip7702.Authorization do
-  @moduledoc "Models a transaction extension with extra fields from eip7702 set code transactions."
+  @moduledoc "Models a transaction extension with authorization tuples from eip7702 set code transactions."
 
   use Explorer.Schema
 
