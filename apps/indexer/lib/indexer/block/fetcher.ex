@@ -758,17 +758,17 @@ defmodule Indexer.Block.Fetcher do
       )
 
     authority =
-      ec_recover(signed_message, signed_authorization.r, signed_authorization.s, signed_authorization.y_parity)
+      ec_recover(signed_message, signed_authorization.r, signed_authorization.s, signed_authorization.v)
 
     authority
   end
 
-  defp ec_recover(signed_message, r, s, y_parity) do
+  defp ec_recover(signed_message, r, s, v) do
     r_bytes = <<r::integer-size(256)>>
     s_bytes = <<s::integer-size(256)>>
 
     {:ok, <<_compression::bytes-size(1), public_key::binary>>} =
-      ExSecp256k1.recover(signed_message, r_bytes, s_bytes, y_parity)
+      ExSecp256k1.recover(signed_message, r_bytes, s_bytes, v)
 
     <<_::bytes-size(12), hash::binary>> = ExKeccak.hash_256(public_key)
     address = Base.encode16(hash, case: :lower)

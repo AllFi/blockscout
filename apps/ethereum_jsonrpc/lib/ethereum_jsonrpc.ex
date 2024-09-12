@@ -153,7 +153,7 @@ defmodule EthereumJSONRPC do
           nonce: non_neg_integer(),
           r: non_neg_integer(),
           s: non_neg_integer(),
-          y_parity: non_neg_integer()
+          v: non_neg_integer()
         }
 
   @doc """
@@ -531,7 +531,7 @@ defmodule EthereumJSONRPC do
       nonce: quantity_to_integer(map["nonce"]),
       r: quantity_to_integer(map["r"]),
       s: quantity_to_integer(map["s"]),
-      y_parity: quantity_to_integer(map["yParity"])
+      v: quantity_to_integer(map["v"])
     }
   end
 

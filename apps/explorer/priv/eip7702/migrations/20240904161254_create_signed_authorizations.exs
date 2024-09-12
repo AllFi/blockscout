@@ -9,10 +9,10 @@ defmodule Explorer.Repo.Eip7702.Migrations.CreateSignedAuthorizations do
       )
 
       add(:index, :integer, null: false, primary_key: true)
-      add(:chain_id, :integer, null: false)
+      add(:chain_id, :bigint, null: false)
       add(:address, :bytea, null: false)
       add(:nonce, :integer, null: false)
-      add(:y_parity, :integer, null: false)
+      add(:v, :integer, null: false)
       add(:r, :numeric, precision: 100, null: false)
       add(:s, :numeric, precision: 100, null: false)
       add(:authority, :bytea, null: false)
