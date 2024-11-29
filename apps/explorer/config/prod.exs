@@ -64,6 +64,11 @@ config :explorer, Explorer.Repo.Beacon,
   timeout: :timer.seconds(60),
   ssl_opts: [verify: :verify_none]
 
+config :explorer, Explorer.Repo.Eip7702,
+  prepare: :unnamed,
+  timeout: :timer.seconds(60),
+  ssl_opts: [verify: :verify_none]
+
 config :explorer, Explorer.Repo.Arbitrum,
   prepare: :unnamed,
   timeout: :timer.seconds(60),

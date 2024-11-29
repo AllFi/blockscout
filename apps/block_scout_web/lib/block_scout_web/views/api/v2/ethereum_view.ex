@@ -23,6 +23,36 @@ defmodule BlockScoutWeb.API.V2.EthereumView do
         |> Map.put("blob_gas_price", item.blob_gas_price)
         |> Map.put("burnt_blob_fee", Decimal.mult(item.blob_gas_used, item.blob_gas_price))
     end
+
+    case Map.get(transaction, :signed_authorizations) do
+      nil ->
+        out_json
+
+      %Ecto.Association.NotLoaded{} ->
+        out_json
+
+      [] ->
+        out_json
+
+      authorizations ->
+        out_json
+        |> Map.put(
+          "authorizationList",
+          authorizations
+          |> Enum.sort_by(& &1.index, :asc)
+          |> Enum.map(
+            &%{
+              "address" => &1.address,
+              "chain_id" => &1.chain_id,
+              "nonce" => &1.nonce,
+              "r" => &1.r,
+              "s" => &1.s,
+              "v" => &1.v,
+              "authority" => &1.authority
+            }
+          )
+        )
+    end
   end
 
   def extend_block_json_response(out_json, %Block{} = block, single_block?) do

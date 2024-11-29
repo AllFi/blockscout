@@ -33,6 +33,8 @@ config :explorer, Explorer.Repo.Suave, timeout: :timer.seconds(80)
 
 config :explorer, Explorer.Repo.Beacon, timeout: :timer.seconds(80)
 
+config :explorer, Explorer.Repo.Eip7702, timeout: :timer.seconds(80)
+
 # Configure Arbitrum database
 config :explorer, Explorer.Repo.Arbitrum, timeout: :timer.seconds(80)
 

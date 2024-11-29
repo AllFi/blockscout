@@ -113,6 +113,11 @@ defmodule BlockScoutWeb.API.V2.TransactionController do
 
     necessity_by_association =
       case Application.get_env(:explorer, :chain_type) do
+        :ethereum ->
+          necessity_by_association_with_actions
+          # it is likely the only endpoint where we need this
+          |> Map.put(:signed_authorizations, :optional)
+
         :polygon_zkevm ->
           necessity_by_association_with_actions
           |> Map.put(:zkevm_batch, :optional)

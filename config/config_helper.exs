@@ -11,7 +11,7 @@ defmodule ConfigHelper do
 
     repos =
       case chain_type() do
-        :ethereum -> base_repos ++ [Explorer.Repo.Beacon]
+        :ethereum -> base_repos ++ [Explorer.Repo.Beacon, Explorer.Repo.Eip7702]
         :optimism -> base_repos ++ [Explorer.Repo.Optimism]
         :polygon_edge -> base_repos ++ [Explorer.Repo.PolygonEdge]
         :polygon_zkevm -> base_repos ++ [Explorer.Repo.PolygonZkevm]
